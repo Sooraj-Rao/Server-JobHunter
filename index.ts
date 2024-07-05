@@ -6,21 +6,24 @@ import { UserRouter } from "./src/routers/user/user.route";
 import { EmpRouter } from "./src/routers/employee/emp.route";
 import { REDIRECT_URL } from "./src/data/someData";
 import session from "express-session";
+import memorystore from "memorystore";
+const MemoryStore = memorystore(session);
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(
   session({
-    secret: "Sooraj Rao",
-    saveUninitialized: false,
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000, 
+    }),
     resave: false,
-    cookie: {
-      maxAge: 60000 * 60,
-    },
+    saveUninitialized: false, 
+    secret: "6687ab555c60ca95d2b3492c",
   })
 );
-
 Connect();
 
 app.use("/api/auth", AuthRouter);

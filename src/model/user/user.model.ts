@@ -69,7 +69,7 @@ const UserSchema = new Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    userInfo: { type: userInfoSchema, required: true },
+    userInfo: { type: userInfoSchema},
     appliedJobs: [{ type: Schema.Types.ObjectId, ref: "Job" }],
   },
   {
