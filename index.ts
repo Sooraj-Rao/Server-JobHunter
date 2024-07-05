@@ -6,9 +6,11 @@ import { UserRouter } from "./src/routers/user/user.route";
 import { EmpRouter } from "./src/routers/employee/emp.route";
 import session from "express-session";
 import memorystore from "memorystore";
+import cors from "cors";
 const MemoryStore = memorystore(session);
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
