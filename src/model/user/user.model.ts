@@ -32,6 +32,7 @@ export interface IUser extends Document {
     githubProfile: string;
     website?: string;
   };
+  appliedJobs: Types.ObjectId[]; 
 }
 
 const educationSchema = new Schema({
@@ -55,7 +56,7 @@ const userInfoSchema = new Schema({
   postalCode: { type: String, required: true },
   skills: { type: [String], required: true },
   education: { type: [educationSchema], required: true },
-  experience: { type: [experienceSchema], required: true },
+  experience: { type: [experienceSchema] },
   resumeUrl: { type: String, required: true },
   portfolioUrl: { type: String },
   linkedInProfile: { type: String, required: true },
@@ -68,7 +69,8 @@ const UserSchema = new Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    userInfo: { type: userInfoSchema },
+    userInfo: { type: userInfoSchema, required: true },
+    appliedJobs: [{ type: Schema.Types.ObjectId, ref: "Job" }],
   },
   {
     timestamps: true,

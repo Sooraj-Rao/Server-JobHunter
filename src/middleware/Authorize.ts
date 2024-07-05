@@ -25,21 +25,30 @@ export const AuthorizeRequest = async (
       userId: string;
       type: string;
     };
-    if (decoded.type === "user") {
+
+    if (!decoded?.userId || !decoded?.type) {
+      return handleError(res, "Unauthorized", 401);
+    }
+
+    if (decoded?.type === "user") {
       Collection = User;
-    } else if (decoded.type === "company") {
+    } else if (decoded?.type === "company") {
       Collection = Company;
     } else {
       return handleError(res, "Invalid user type specified", 400);
     }
 
-    const user = await Collection.findById(decoded.userId);
+    const user = await Collection.findById(decoded?.userId);
 
     if (!user) {
       return handleError(res, "Unauthorized", 401);
     }
 
-    req.user = user;
+    if (req.session.userData) {
+      req.user = req.session.userData;
+    } else {
+      return handleError(res, "Unauthorized", 401);
+    }
     next();
   } catch (error) {
     return handleError(res, "Unauthorized", 401);

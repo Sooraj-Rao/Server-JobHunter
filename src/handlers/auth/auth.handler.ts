@@ -17,6 +17,13 @@ export function handleError(
 export function handleSuccess(res: Response, message: string) {
   return res.status(200).json({ error: false, message });
 }
+export function handleSuccessData(
+  res: Response,
+  message: string,
+  data: object
+) {
+  return res.status(200).json({ error: false, message, data });
+}
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_jwt_secret";
 const JWT_EXPIRY = process.env.JWT_EXPIRY || "1h";
@@ -104,6 +111,17 @@ export async function Login(req: Request, res: Response) {
     const token = jwt.sign({ userId: isExistingUser._id, type }, JWT_SECRET, {
       expiresIn: JWT_EXPIRY,
     });
+
+    req.session.visited = true;
+    req.sessionStore.get(req.sessionID, (err) => {
+      if (err) {
+        return res.send("Failed to get session data");
+      }
+    });
+    req.session.userData = {
+      user: { type, name: isExistingUser?.name, email: isExistingUser?.email },
+      id: isExistingUser?._id,
+    };
 
     res.cookie("token", token, {
       httpOnly: true,
