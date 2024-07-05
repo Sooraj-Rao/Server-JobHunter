@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import { AuthRouter } from "./src/routers/auth/auth.route";
 import { UserRouter } from "./src/routers/user/user.route";
 import { EmpRouter } from "./src/routers/employee/emp.route";
-import { REDIRECT_URL } from "./src/data/someData";
 import session from "express-session";
 import memorystore from "memorystore";
 const MemoryStore = memorystore(session);
@@ -17,10 +16,10 @@ app.use(
   session({
     cookie: { maxAge: 86400000 },
     store: new MemoryStore({
-      checkPeriod: 86400000, 
+      checkPeriod: 86400000,
     }),
     resave: false,
-    saveUninitialized: false, 
+    saveUninitialized: false,
     secret: "6687ab555c60ca95d2b3492c",
   })
 );
@@ -33,7 +32,7 @@ app.use("/api/emp", EmpRouter);
 // app.use("/api/job", EmpRouter);
 
 app.use("/*", (req, res) => {
-  res.redirect(REDIRECT_URL);
+  res.send("<h1>404 Not found</h4><h2>You requested wrong URL</h2>");
 });
 
 app.listen(3000, () => {
