@@ -2,10 +2,7 @@ import { Router } from "express";
 import { AuthorizeRequest } from "../../middleware/Authorize";
 import UpdateUser from "../../handlers/user/user-info.handler";
 import { ApplyJob } from "../../handlers/user/apply-job.handler";
-import {
-  getAllJobs,
-  getJobById,
-} from "../../handlers/employee/job.handler";
+import { getAllJobs, getJobById } from "../../handlers/employee/job.handler";
 
 const router = Router();
 

@@ -52,12 +52,10 @@ const jobSchema = new Schema<IJob>({
   },
   employmentType: {
     type: String,
-    enum: ["Full-time", "Part-time", "Contract", "Freelance"],
     required: true,
   },
   experienceLevel: {
     type: String,
-    enum: ["Entry", "Mid", "Senior"],
     required: true,
   },
   companyName: {

@@ -60,7 +60,7 @@ export async function CreateJob(req: Request, res: Response) {
 // Get a single job by ID
 export async function getJobById(req: Request, res: Response) {
   try {
-    const jobId = req.params.jobId;
+    const jobId = req.params.id;
     const job = await Job.findById(jobId).exec();
     if (!job) {
       return handleError(res, "Job not found", 404);
