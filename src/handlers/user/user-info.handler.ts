@@ -21,6 +21,7 @@ export default async function UpdateUser(req: Request, res: Response) {
     } = req.body;
 
     const authUser = req.user;
+    
 
     const updateUser = await User.findByIdAndUpdate(
       authUser.id,

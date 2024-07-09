@@ -9,7 +9,13 @@ import {
 // Fetch all jobs
 export async function getAllJobs(req: Request, res: Response) {
   try {
+    if (req?.session?.userData?.jobs){
+      return handleSuccessData(res, "Fetched all jobs", req.session.userData.jobs);
+    }
     const jobs = await Job.find().exec();
+    req.session.userData = {
+      jobs,
+    };
     return handleSuccessData(res, "Fetched all jobs", jobs);
   } catch (error) {
     return handleError(res, "Failed to fetch jobs", 500);

@@ -112,14 +112,13 @@ export async function Login(req: Request, res: Response) {
       expiresIn: JWT_EXPIRY,
     });
 
-    req.session.visited = true;
     req.sessionStore.get(req.sessionID, (err) => {
       if (err) {
         return res.send("Failed to get session data");
       }
     });
     req.session.userData = {
-      user: { type, name: isExistingUser?.name, email: isExistingUser?.email },
+      userData: { type, name: isExistingUser?.name, email: isExistingUser?.email },
       id: isExistingUser?._id,
     };
 

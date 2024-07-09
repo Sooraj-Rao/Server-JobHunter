@@ -7,6 +7,7 @@ import { EmpRouter } from "./src/routers/employee/emp.route";
 import session from "express-session";
 import memorystore from "memorystore";
 import cors from "cors";
+import { UniRouter } from "./src/routers/uni-route/uni.route";
 const MemoryStore = memorystore(session);
 
 const app = express();
@@ -30,8 +31,8 @@ Connect();
 app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/emp", EmpRouter);
+app.use("/api/profile", UniRouter);
 
-// app.use("/api/job", EmpRouter);
 
 app.use("/*", (req, res) => {
   res.send("<h1>404 Not found</h4><h2>You requested wrong URL</h2>");

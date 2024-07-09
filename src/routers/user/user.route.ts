@@ -6,7 +6,7 @@ import { getAllJobs, getJobById } from "../../handlers/employee/job.handler";
 
 const router = Router();
 
-router.get("/getall", getAllJobs);
+router.get("/getall",AuthorizeRequest, getAllJobs);
 router.post("/updateinfo", AuthorizeRequest, UpdateUser);
 router.post("/apply/:jobId", AuthorizeRequest, ApplyJob);
 router.get("/getone/:id", getJobById);
