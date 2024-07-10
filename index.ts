@@ -11,10 +11,12 @@ import { UniRouter } from "./src/routers/uni-route/uni.route";
 const MemoryStore = memorystore(session);
 
 const app = express();
-app.use(cors({
-  origin: ['http://localhost:5173'], // Replace with your actual frontend domain
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -23,8 +25,8 @@ app.use(
     cookie: {
       maxAge: 86400000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'lax',
+      secure: true,
+      sameSite: "lax",
     },
     store: new MemoryStore({
       checkPeriod: 86400000,
@@ -43,7 +45,9 @@ app.use("/api/emp", EmpRouter);
 app.use("/api/", UniRouter);
 
 app.all("/*", (req, res) => {
-  res.status(404).send("<h1>404 Not Found</h1><h2>You requested a wrong URL</h2>");
+  res
+    .status(404)
+    .send("<h1>404 Not Found</h1><h2>You requested a wrong URL</h2>");
 });
 
 app.listen(3000, () => {
