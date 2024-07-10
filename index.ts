@@ -32,7 +32,7 @@ app.use(
       checkPeriod: 86400000,
     }),
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: "6687ab555c60ca95d2b3492c",
   })
 );
