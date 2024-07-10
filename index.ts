@@ -11,13 +11,21 @@ import { UniRouter } from "./src/routers/uni-route/uni.route";
 const MemoryStore = memorystore(session);
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173'], // Replace with your actual frontend domain
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(
   session({
-    cookie: { maxAge: 86400000 },
+    cookie: {
+      maxAge: 86400000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', 
+      sameSite: 'lax',
+    },
     store: new MemoryStore({
       checkPeriod: 86400000,
     }),
@@ -26,16 +34,16 @@ app.use(
     secret: "6687ab555c60ca95d2b3492c",
   })
 );
+
 Connect();
 
 app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/emp", EmpRouter);
-app.use("/api/profile", UniRouter);
+app.use("/api/", UniRouter);
 
-
-app.use("/*", (req, res) => {
-  res.send("<h1>404 Not found</h4><h2>You requested wrong URL</h2>");
+app.all("/*", (req, res) => {
+  res.status(404).send("<h1>404 Not Found</h1><h2>You requested a wrong URL</h2>");
 });
 
 app.listen(3000, () => {

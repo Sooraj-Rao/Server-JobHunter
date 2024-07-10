@@ -4,24 +4,21 @@ import { handleError, handleSuccess } from "../auth/auth.handler";
 
 export default async function updateEmp(req: Request, res: Response) {
   try {
-    const { industry, website, phone } = req.body;
-    if (!industry || !website || !phone) {
-      return handleError(res, "All fields are required", 400);
-    }
+    const { industry, website, phone,desc } = req.body;
+   
     const authCompany = req.user;
-
     const updatedCompany = await Company.findByIdAndUpdate(
-      authCompany._id,
+      authCompany.id,
       {
-        about: {
-          industry,
-          website,
-          phone,
-        },
+        $set: {
+          'about.industry': industry,
+          'about.website': website,
+          'about.phone': phone,
+          'about.desc': desc
+        }
       },
       { new: true }
     );
-
     if (updatedCompany) {
       handleSuccess(res, "Company details updated successfully");
     } else {

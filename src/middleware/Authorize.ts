@@ -43,8 +43,8 @@ export const AuthorizeRequest = async (
     // if (!user) {
     //   return handleError(res, "Unauthorized", 401);
     // }
-    
     // managing everything thrugh server session..
+    console.log(req.session.userData);
     if (req.session.userData) {
       req.user = req?.session?.userData;
     } else {

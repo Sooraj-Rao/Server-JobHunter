@@ -9,15 +9,21 @@ import {
 // Fetch all jobs
 export async function getAllJobs(req: Request, res: Response) {
   try {
-    if (req?.session?.userData?.jobs){
-      return handleSuccessData(res, "Fetched all jobs", req.session.userData.jobs);
+    if (req?.session?.userData?.jobData) {
+      return handleSuccessData(
+        res,
+        "Fetched cache all jobs",
+        req.session.userData.jobData.jobs
+      );
     }
     const jobs = await Job.find().exec();
-    req.session.userData = {
-      jobs,
-    };
+    if (req.session.userData)
+      req.session.userData.jobData = {
+        jobs,
+      };
     return handleSuccessData(res, "Fetched all jobs", jobs);
   } catch (error) {
+    console.log(error);
     return handleError(res, "Failed to fetch jobs", 500);
   }
 }
@@ -38,7 +44,8 @@ export async function CreateJob(req: Request, res: Response) {
     } = req.body;
 
     const companyId = req.user.id;
-    if (req.user.user.type == "user") {
+    console.log();
+    if (req.user.userData.type == "user") {
       return handleError(res, "You cant post jobs", 500);
     }
 

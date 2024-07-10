@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import { User } from "../../model/user/user.model";
+import { Request, Response } from 'express';
+import { User } from '../../model/user/user.model';
+import { handleError, handleSuccess } from '../auth/auth.handler';
 
 export default async function UpdateUser(req: Request, res: Response) {
   try {
@@ -21,47 +22,37 @@ export default async function UpdateUser(req: Request, res: Response) {
     } = req.body;
 
     const authUser = req.user;
-    
 
     const updateUser = await User.findByIdAndUpdate(
       authUser.id,
       {
-        userInfo: {
-          phone,
-          address,
-          city,
-          state,
-          country,
-          postalCode,
-          skills,
-          experience,
-          education,
-          resumeUrl,
-          portfolioUrl,
-          linkedInProfile,
-          githubProfile,
-          website,
+        $set: {
+          'userInfo.phone': phone,
+          'userInfo.address': address,
+          'userInfo.city': city,
+          'userInfo.state': state,
+          'userInfo.country': country,
+          'userInfo.postalCode': postalCode,
+          'userInfo.skills': skills,
+          'userInfo.experience': experience,
+          'userInfo.education': education,
+          'userInfo.resumeUrl': resumeUrl,
+          'userInfo.portfolioUrl': portfolioUrl,
+          'userInfo.linkedInProfile': linkedInProfile,
+          'userInfo.githubProfile': githubProfile,
+          'userInfo.website': website,
         },
       },
       { new: true }
     );
 
     if (updateUser) {
-      return res.status(201).json({
-        message: "User info updated successfully",
-        error: false,
-      });
+      return handleSuccess(res,'User info updated successfully')
     } else {
-      return res.status(500).json({
-        error: true,
-        message: "Failed to update user info",
-      });
+      return handleError(res,'Failed to update user info',500)
     }
   } catch (error) {
     console.error("Error updating user info:", error);
-    return res.status(500).json({
-      error: true,
-      message: "Failed to update user info",
-    });
+    return handleError(res,'Failed to update user info',500)
   }
 }

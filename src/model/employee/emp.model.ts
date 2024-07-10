@@ -1,12 +1,16 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface IAbout extends Document {
+  title: string;
+  desc: string;
   industry: string;
   website: string;
   phone: number;
 }
 
 const aboutSchema = new Schema({
+  desc: { type: String, required: true },
+  title: { type: String, required: true },
   industry: { type: String, required: true },
   website: { type: String, required: true },
   phone: { type: String, required: true },

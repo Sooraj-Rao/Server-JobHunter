@@ -118,17 +118,19 @@ export async function Login(req: Request, res: Response) {
       }
     });
     req.session.userData = {
-      userData: { type, name: isExistingUser?.name, email: isExistingUser?.email },
+      userData: {
+        type,
+        name: isExistingUser?.name,
+        email: isExistingUser?.email,
+      },
       id: isExistingUser?._id,
     };
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 3600000,
-      sameSite: "strict",
-    });
-    return handleSuccess(res, "Login successful");
+    res
+      .cookie("token", token)
+      .json({ error: false, message: "Login successful!", data: isExistingUser });
+
+    // return handleSuccess(res, "Login successful");
   } catch (error) {
     console.error(error);
     return handleError(res, "Internal Server Error", 500);
