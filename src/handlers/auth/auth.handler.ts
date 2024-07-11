@@ -128,7 +128,7 @@ export async function Login(req: Request, res: Response) {
 
     res
       .cookie("token", token, {
-        domain: "https://project-job1.vercel.app/",
+        domain: "project-job1.vercel.app",
         path: "/",
         httpOnly: true,
         secure: true,
