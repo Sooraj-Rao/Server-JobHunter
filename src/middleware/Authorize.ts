@@ -15,41 +15,42 @@ export const AuthorizeRequest = async (
   next: NextFunction
 ) => {
   try {
-    // const { token } = req.cookies;
-    // let Collection: any;
-    // if (!token) {
-    //   return handleError(res, "Unauthorized", 401);
-    // }
-
-    // const decoded = jwt.verify(token, JWT_SECRET) as {
-    //   userId: string;
-    //   type: string;
-    // };
-
-    // if (!decoded?.userId || !decoded?.type) {
-    //   return handleError(res, "Unauthorized", 401);
-    // }
-
-    // if (decoded?.type === "user") {
-    //   Collection = User;
-    // } else if (decoded?.type === "company") {
-    //   Collection = Company;
-    // } else {
-    //   return handleError(res, "Invalid user type specified", 400);
-    // }
-
-    // const user = await Collection.findById(decoded?.userId);
-
-    // if (!user) {
-    //   return handleError(res, "Unauthorized", 401);
-    // }
-    // managing everything thrugh server session..
-    console.log(req.session.userData);
-    if (req.session.userData) {
-      req.user = req?.session?.userData;
-    } else {
+    const { token } = req.cookies;
+    let Collection: any;
+    if (!token) {
       return handleError(res, "Unauthorized", 401);
     }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      userId: string;
+      type: string;
+    };
+
+    if (!decoded?.userId || !decoded?.type) {
+      return handleError(res, "Unauthorized", 401);
+    }
+
+    if (decoded?.type === "user") {
+      Collection = User;
+    } else if (decoded?.type === "company") {
+      Collection = Company;
+    } else {
+      return handleError(res, "Invalid user type specified", 400);
+    }
+
+    const user = await Collection.findById(decoded?.userId);
+
+    if (!user) {
+      return handleError(res, "Unauthorized", 401);
+    }
+    req.user = { id: user._id, user, type: decoded.type };
+    // managing everything thrugh server session..
+    // console.log(req.session.userData);
+    // if (req.session.userData) {
+    //   req.user = req?.session?.userData;
+    // } else {
+    //   return handleError(res, "Unauthorized", 401);
+    // }
     next();
   } catch (error) {
     return handleError(res, "Unauthorized", 401);

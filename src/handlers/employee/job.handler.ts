@@ -5,6 +5,7 @@ import {
   handleSuccess,
   handleSuccessData,
 } from "../auth/auth.handler";
+import { AppliedJob } from "../../model/user/applied-job.model";
 
 // Fetch all jobs
 export async function getAllJobs(req: Request, res: Response) {
@@ -45,7 +46,7 @@ export async function CreateJob(req: Request, res: Response) {
 
     const companyId = req.user.id;
     console.log();
-    if (req.user.userData.type == "user") {
+    if (req.user.type == "user") {
       return handleError(res, "You cant post jobs", 500);
     }
 
@@ -104,13 +105,61 @@ export async function updateJob(req: Request, res: Response) {
 // Delete a job by ID
 export async function deleteJob(req: Request, res: Response) {
   try {
-    const jobId = req.params.jobId;
+    const jobId = req.params.id;
+    console.log(jobId);
     const deletedJob = await Job.findByIdAndDelete(jobId).exec();
     if (!deletedJob) {
-      return handleError(res, "Job not found", 404);
+      return handleError(res, "Job not found", 200);
     }
     return handleSuccess(res, "Job deleted successfully");
   } catch (error) {
     return handleError(res, "Failed to delete job", 500);
+  }
+}
+
+// Get all jobs of a company..
+
+export async function getPostedJobs(req: Request, res: Response) {
+  try {
+    const job = await Job.find({ companyId: req.user.id }).exec();
+    if (!job) {
+      return handleError(res, "Job not found", 200);
+    }
+    return handleSuccessData(res, "Job found", job);
+  } catch (error) {
+    return handleError(res, "Failed to fetch job", 500);
+  }
+}
+
+export async function getAllApplications(req: Request, res: Response) {
+  try {
+    console.log(req.user.id);
+    const job = await AppliedJob.find({ companyId: req.user.id })
+      .populate("jobId")
+      .populate("userId")
+      .populate("companyId");
+    if (!job) {
+      return handleError(res, "No applications found", 200);
+    }
+    return handleSuccessData(res, "Applications found", job);
+  } catch (error) {
+    return handleError(res, "Failed to fetch Applications", 500);
+  }
+}
+
+export async function updateApplicationStatus(req: Request, res: Response) {
+  try {
+    const id = req.params?.id;
+    const msg = req.body?.status;
+    console.log(msg);
+    console.log(id);
+
+    const job = await AppliedJob.findByIdAndUpdate(id, { status: msg });
+    if (!job) {
+      return handleError(res, "Failed to update", 200);
+    }
+    return handleSuccessData(res, "Succesfully updated", job);
+  } catch (error) {
+    return handleError(res, "Internal Server Error", 500);
   }
 }

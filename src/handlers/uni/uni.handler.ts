@@ -10,20 +10,21 @@ import { Company } from "../../model/employee/emp.model";
 export async function getUserDetails(req: Request, res: Response) {
   try {
     let Collection;
-    const data = req.session.userData;
-    if (data?.userData?.type === "user") {
+    const user=req.user;
+    // const data = req.session.userData;
+    if (user?.type === "user") {
       Collection = User;
-    } else if (data?.userData?.type === "company") {
+    } else if (user?.type === "company") {
       Collection = Company;
     } else {
       return handleError(res, "Invalid user type specified", 400);
     }
 
-    const user = await Collection.findById(data?.id).select("-password");
-    if (!user) {
+    const findUser = await Collection.findById(user?.id).select("-password");
+    if (!findUser) {
       return handleError(res, "User not found", 500);
     }
-    const dataWithType = { user, type: data.userData.type };
+    const dataWithType = { user:findUser, type: user?.type };
     return handleSuccessData(res, "sucess", dataWithType);
   } catch (error) {
     return handleError(res, "Internal Server Error", 500);
@@ -34,7 +35,7 @@ export async function Logout(req: Request, res: Response) {
   try {
     res.clearCookie("connect.sid");
     res.clearCookie("token");
-    return handleSuccess(res, "successfully Logged out!");
+    return handleSuccess(res, "Successfully logged out!");
   } catch (error) {
     return handleError(res, "Internal Server Error", 500);
   }

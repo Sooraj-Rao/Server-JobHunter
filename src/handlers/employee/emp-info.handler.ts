@@ -4,8 +4,9 @@ import { handleError, handleSuccess } from "../auth/auth.handler";
 
 export default async function updateEmp(req: Request, res: Response) {
   try {
-    const { industry, website, phone,desc } = req.body;
-   
+    const { industry, website, phone,desc ,title,address} = req.body?.about;
+   console.log(req.body);
+   console.log(req.user);
     const authCompany = req.user;
     const updatedCompany = await Company.findByIdAndUpdate(
       authCompany.id,
@@ -14,7 +15,9 @@ export default async function updateEmp(req: Request, res: Response) {
           'about.industry': industry,
           'about.website': website,
           'about.phone': phone,
-          'about.desc': desc
+          'about.desc': desc,
+          'about.title': title,
+          'about.address': address,
         }
       },
       { new: true }
