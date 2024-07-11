@@ -127,10 +127,13 @@ export async function Login(req: Request, res: Response) {
     };
 
     res
-      .cookie("token", token)
-      .json({ error: false, message: "Login successful!" ,type,token});
-
-    // return handleSuccess(res, "Login successful");
+      .cookie("token", token, {
+        domain: "https://project-job1.vercel.app/",
+        path: "/",
+        httpOnly: true,
+        secure: true,
+      })
+      .json({ error: false, message: "Login successful!", type, token });
   } catch (error) {
     console.error(error);
     return handleError(res, "Internal Server Error", 500);
