@@ -128,7 +128,7 @@ export async function Login(req: Request, res: Response) {
 
     res
       .cookie("token", token)
-      .json({ error: false, message: "Login successful!" ,type});
+      .json({ error: false, message: "Login successful!" ,type,token});
 
     // return handleSuccess(res, "Login successful");
   } catch (error) {
