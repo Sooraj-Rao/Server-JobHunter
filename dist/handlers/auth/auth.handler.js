@@ -97,26 +97,25 @@ async function Login(req, res) {
         if (!isPasswordValid) {
             return handleError(res, "Password is invalid", 400);
         }
-        const token = jsonwebtoken_1.default.sign({ userId: isExistingUser._id, type }, JWT_SECRET, {
-            expiresIn: JWT_EXPIRY,
-        });
-        req.session.visited = true;
         req.sessionStore.get(req.sessionID, (err) => {
             if (err) {
                 return res.send("Failed to get session data");
             }
         });
         req.session.userData = {
-            user: { type, name: isExistingUser?.name, email: isExistingUser?.email },
+            userData: {
+                type,
+                name: isExistingUser?.name,
+                email: isExistingUser?.email,
+            },
             id: isExistingUser?._id,
         };
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 3600000,
-            sameSite: "strict",
+        const token = jsonwebtoken_1.default.sign({ userId: isExistingUser._id, type }, JWT_SECRET, {
+            expiresIn: JWT_EXPIRY,
         });
-        return handleSuccess(res, "Login successful");
+        res
+            .cookie("token", token)
+            .json({ error: false, message: "Login successful!", type, token });
     }
     catch (error) {
         console.error(error);

@@ -13,4 +13,7 @@ exports.EmpRouter = router;
 router.post("/create", Authorize_1.AuthorizeRequest, job_handler_1.CreateJob);
 router.put("/update/:id", Authorize_1.AuthorizeRequest, job_handler_1.updateJob);
 router.delete("/delete/:id", Authorize_1.AuthorizeRequest, job_handler_1.deleteJob);
-router.post("/updateinfo", Authorize_1.AuthorizeRequest, emp_info_handler_1.default);
+router.put("/updateinfo", Authorize_1.AuthorizeRequest, emp_info_handler_1.default);
+router.post("/posted", Authorize_1.AuthorizeRequest, job_handler_1.getPostedJobs);
+router.post("/applications/status/:id", Authorize_1.AuthorizeRequest, job_handler_1.updateApplicationStatus);
+router.post("/applications", Authorize_1.AuthorizeRequest, job_handler_1.getAllApplications);

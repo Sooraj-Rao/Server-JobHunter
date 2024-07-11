@@ -5,18 +5,11 @@ const emp_model_1 = require("../../model/employee/emp.model");
 const auth_handler_1 = require("../auth/auth.handler");
 async function updateEmp(req, res) {
     try {
-        const { industry, website, phone } = req.body;
-        if (!industry || !website || !phone) {
-            return (0, auth_handler_1.handleError)(res, "All fields are required", 400);
-        }
+        const data = req.body?.about;
         const authCompany = req.user;
-        const updatedCompany = await emp_model_1.Company.findByIdAndUpdate(authCompany._id, {
-            about: {
-                industry,
-                website,
-                phone,
-            },
-        }, { new: true });
+        console.log(authCompany);
+        const updatedCompany = await emp_model_1.Company.findByIdAndUpdate(authCompany.id, data, { new: true });
+        console.log(updatedCompany);
         if (updatedCompany) {
             (0, auth_handler_1.handleSuccess)(res, "Company details updated successfully");
         }
