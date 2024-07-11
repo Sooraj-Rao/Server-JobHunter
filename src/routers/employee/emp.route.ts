@@ -16,8 +16,8 @@ router.post("/create", AuthorizeRequest, CreateJob);
 router.put("/update/:id", AuthorizeRequest, updateJob);
 router.delete("/delete/:id", AuthorizeRequest, deleteJob);
 router.put("/updateinfo", AuthorizeRequest, updateEmp);
-router.get("/posted", AuthorizeRequest, getPostedJobs);
+router.post("/posted", AuthorizeRequest, getPostedJobs);
 router.post("/applications/status/:id", AuthorizeRequest, updateApplicationStatus);
-router.get("/applications", AuthorizeRequest, getAllApplications);
+router.post("/applications", AuthorizeRequest, getAllApplications);
 
 export { router as EmpRouter };

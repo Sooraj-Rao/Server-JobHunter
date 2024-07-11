@@ -127,11 +127,7 @@ export async function Login(req: Request, res: Response) {
     });
 
     res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      })
+      .cookie("token", token)
       .json({ error: false, message: "Login successful!", type, token });
   } catch (error) {
     console.error(error);

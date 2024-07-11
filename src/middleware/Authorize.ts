@@ -15,12 +15,8 @@ export const AuthorizeRequest = async (
   next: NextFunction
 ) => {
   try {
-    const { token } = req.cookies;
     let Collection: any;
-    if (!token) {
-      return handleError(res, "token not found", 401);
-    }
-
+    const { token } = req.body;
     const decoded = jwt.verify(token, JWT_SECRET) as {
       userId: string;
       type: string;
@@ -44,13 +40,7 @@ export const AuthorizeRequest = async (
       return handleError(res, "user not found", 401);
     }
     req.user = { id: user._id, user, type: decoded.type };
-    // managing everything thrugh server session..
-    // console.log(req.session.userData);
-    // if (req.session.userData) {
-    //   req.user = req?.session?.userData;
-    // } else {
-    //   return handleError(res, "Unauthorized", 401);
-    // }
+
     next();
   } catch (error) {
     return handleError(res, "token is mod", 401);

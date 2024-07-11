@@ -9,8 +9,8 @@ const router = Router();
 
 router.get("/getall", getAllJobs);
 router.get("/getone/:id", getJobById);
-router.post("/updateinfo", AuthorizeRequest, UpdateUser);
+router.put("/updateinfo", AuthorizeRequest, UpdateUser);
 router.post("/apply/:jobId", AuthorizeRequest, ApplyJob);
-router.get("/applied/", AuthorizeRequest, getAppliedJobs);
+router.post("/applied/", AuthorizeRequest, getAppliedJobs);
 
 export { router as UserRouter };

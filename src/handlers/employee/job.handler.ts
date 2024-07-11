@@ -42,10 +42,9 @@ export async function CreateJob(req: Request, res: Response) {
       employmentType,
       experienceLevel,
       companyName,
-    } = req.body;
+    } = req.body.jobData;
 
     const companyId = req.user.id;
-    console.log();
     if (req.user.type == "user") {
       return handleError(res, "You cant post jobs", 500);
     }
@@ -66,7 +65,7 @@ export async function CreateJob(req: Request, res: Response) {
 
     return handleSuccessData(res, "Job created successfully", newJob);
   } catch (error) {
-    console.error("Error creating job:", error);
+    // console.error("Error creating job:", error);
     return handleError(res, "Failed to create job", 500);
   }
 }
@@ -89,7 +88,7 @@ export async function getJobById(req: Request, res: Response) {
 export async function updateJob(req: Request, res: Response) {
   try {
     const jobId = req.params.id;
-    const updatedJobData: Partial<IJob> = req.body;
+    const updatedJobData: Partial<IJob> = req.body?.selectedJob;
     const updatedJob = await Job.findByIdAndUpdate(jobId, updatedJobData, {
       new: true,
     }).exec();

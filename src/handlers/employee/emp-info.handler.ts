@@ -4,24 +4,15 @@ import { handleError, handleSuccess } from "../auth/auth.handler";
 
 export default async function updateEmp(req: Request, res: Response) {
   try {
-    const { industry, website, phone,desc ,title,address} = req.body?.about;
-   console.log(req.body);
-   console.log(req.user);
+    const data = req.body?.about;
     const authCompany = req.user;
+    console.log(authCompany);
     const updatedCompany = await Company.findByIdAndUpdate(
       authCompany.id,
-      {
-        $set: {
-          'about.industry': industry,
-          'about.website': website,
-          'about.phone': phone,
-          'about.desc': desc,
-          'about.title': title,
-          'about.address': address,
-        }
-      },
+      data,
       { new: true }
     );
+    console.log(updatedCompany);
     if (updatedCompany) {
       handleSuccess(res, "Company details updated successfully");
     } else {
