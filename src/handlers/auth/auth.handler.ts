@@ -127,12 +127,7 @@ export async function Login(req: Request, res: Response) {
     };
 
     res
-      .cookie("token", token, {
-        domain: "project-job1.vercel.app",
-        path: "/",
-        httpOnly: true,
-        secure: true,
-      })
+      .cookie("token", token)
       .json({ error: false, message: "Login successful!", type, token });
   } catch (error) {
     console.error(error);
