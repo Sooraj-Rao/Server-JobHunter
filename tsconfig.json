@@ -10,5 +10,5 @@
     "strict": false,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "types/**/*.d.ts", "index.ts"]
+  "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }
