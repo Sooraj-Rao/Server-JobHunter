@@ -108,10 +108,6 @@ export async function Login(req: Request, res: Response) {
       return handleError(res, "Password is invalid", 400);
     }
 
-    const token = jwt.sign({ userId: isExistingUser._id, type }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRY,
-    });
-
     req.sessionStore.get(req.sessionID, (err) => {
       if (err) {
         return res.send("Failed to get session data");
@@ -126,8 +122,16 @@ export async function Login(req: Request, res: Response) {
       id: isExistingUser?._id,
     };
 
+    const token = jwt.sign({ userId: isExistingUser._id, type }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRY,
+    });
+
     res
-      .cookie("token", token)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
       .json({ error: false, message: "Login successful!", type, token });
   } catch (error) {
     console.error(error);
