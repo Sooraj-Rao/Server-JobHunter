@@ -18,7 +18,7 @@ export const AuthorizeRequest = async (
     const { token } = req.cookies;
     let Collection: any;
     if (!token) {
-      return handleError(res, "Unauthorized", 401);
+      return handleError(res, "token not found", 401);
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as {
@@ -27,7 +27,7 @@ export const AuthorizeRequest = async (
     };
 
     if (!decoded?.userId || !decoded?.type) {
-      return handleError(res, "Unauthorized", 401);
+      return handleError(res, "invalid token", 401);
     }
 
     if (decoded?.type === "user") {
@@ -41,7 +41,7 @@ export const AuthorizeRequest = async (
     const user = await Collection.findById(decoded?.userId);
 
     if (!user) {
-      return handleError(res, "Unauthorized", 401);
+      return handleError(res, "user not found", 401);
     }
     req.user = { id: user._id, user, type: decoded.type };
     // managing everything thrugh server session..
@@ -53,6 +53,6 @@ export const AuthorizeRequest = async (
     // }
     next();
   } catch (error) {
-    return handleError(res, "Unauthorized", 401);
+    return handleError(res, "token is mod", 401);
   }
 };
