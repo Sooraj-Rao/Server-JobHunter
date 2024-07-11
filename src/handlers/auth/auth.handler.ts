@@ -128,8 +128,6 @@ export async function Login(req: Request, res: Response) {
 
     res
       .cookie("token", token, {
-      
-        secure: true,
         sameSite: "none",
       })
       .json({ error: false, message: "Login successful!", type, token });
