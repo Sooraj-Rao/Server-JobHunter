@@ -5,10 +5,12 @@ This is the backend server for the JobHunter App, built using Node.js, Express, 
 ## **Features**
 
 - User and Employer Authentication (Register/Login)
-- CRUD operations for job listings
 - User profile management
 - Employer profile management
 - Application tracking
+- caching using session
+        
+  and many more..
 
 ### **Have any queries**
 
