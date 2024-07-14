@@ -7,10 +7,10 @@ import { getAppliedJobs } from "../../handlers/user/applied-jobs.handler";
 
 const router = Router();
 
-router.get("/getall", getAllJobs);
+router.get("/getall",AuthorizeRequest, getAllJobs);
 router.get("/getone/:id", getJobById);
 router.put("/updateinfo", AuthorizeRequest, UpdateUser);
 router.post("/apply/:jobId", AuthorizeRequest, ApplyJob);
-router.post("/applied/", AuthorizeRequest, getAppliedJobs);
+router.get("/applied/", AuthorizeRequest, getAppliedJobs);
 
 export { router as UserRouter };

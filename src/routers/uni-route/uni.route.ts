@@ -4,7 +4,7 @@ import { AuthorizeRequest } from "../../middleware/Authorize";
 
 const router = express.Router();
 
-router.post('/profile',AuthorizeRequest,getUserDetails);
-router.post('/logout',Logout);
+router.get('/profile',AuthorizeRequest,getUserDetails);
+router.get('/logout',Logout);
 
 export { router as UniRouter };

@@ -9,8 +9,14 @@ import { Company } from "../../model/employee/emp.model";
 
 export async function getUserDetails(req: Request, res: Response) {
   try {
+    if (req?.user?.userData) {
+      return handleSuccessData(res, "sucess", {
+        user: req?.user?.userData,
+        type: req?.user?.type,
+      });
+    }
     let Collection;
-    const user=req.user;
+    const user = req.user;
     // const data = req.session.userData;
     if (user?.type === "user") {
       Collection = User;
@@ -24,7 +30,7 @@ export async function getUserDetails(req: Request, res: Response) {
     if (!findUser) {
       return handleError(res, "User not found", 500);
     }
-    const dataWithType = { user:findUser, type: user?.type };
+    const dataWithType = { user: findUser, type: user?.type };
     return handleSuccessData(res, "sucess", dataWithType);
   } catch (error) {
     return handleError(res, "Internal Server Error", 500);

@@ -10,18 +10,16 @@ import { AppliedJob } from "../../model/user/applied-job.model";
 // Fetch all jobs
 export async function getAllJobs(req: Request, res: Response) {
   try {
-    if (req?.session?.userData?.jobData) {
+    console.log(req.user);
+    if (req?.user?.jobData) {
       return handleSuccessData(
         res,
         "Fetched cache all jobs",
-        req.session.userData.jobData.jobs
+        req?.user?.jobData
       );
     }
     const jobs = await Job.find().exec();
-    if (req.session.userData)
-      req.session.userData.jobData = {
-        jobs,
-      };
+    if (req.session.user) req.session.user.jobData = jobs;
     return handleSuccessData(res, "Fetched all jobs", jobs);
   } catch (error) {
     console.log(error);

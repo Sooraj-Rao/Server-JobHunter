@@ -3,12 +3,12 @@
     "typeRoots": ["./node_modules/@types", "./types"],
     "target": "es2020",
     "module": "commonjs",
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "types/**/*.d.ts"]
+  "include": ["src/**/*.ts", "types/**/*.d.ts", "index.ts"]
 }

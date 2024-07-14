@@ -4,11 +4,11 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import memorystore from "memorystore";
 import cors from "cors";
-import { Connect } from "./utils/Db/Connect";
-import { AuthRouter } from "./routers/auth/auth.route";
-import { UserRouter } from "./routers/user/user.route";
-import { EmpRouter } from "./routers/employee/emp.route";
-import { UniRouter } from "./routers/uni-route/uni.route";
+import { Connect } from "./src/utils/Db/Connect";
+import { AuthRouter } from "./src/routers/auth/auth.route";
+import { UserRouter } from "./src/routers/user/user.route";
+import { EmpRouter } from "./src/routers/employee/emp.route";
+import { UniRouter } from "./src/routers/uni-route/uni.route";
 const MemoryStore = memorystore(session);
 
 const app = express();
@@ -25,8 +25,8 @@ app.use(
   session({
     cookie: {
       maxAge: 86400000,
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       sameSite: "lax",
     },
     store: new MemoryStore({

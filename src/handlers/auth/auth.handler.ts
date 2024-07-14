@@ -113,12 +113,9 @@ export async function Login(req: Request, res: Response) {
         return res.send("Failed to get session data");
       }
     });
-    req.session.userData = {
-      userData: {
-        type,
-        name: isExistingUser?.name,
-        email: isExistingUser?.email,
-      },
+    req.session.user = {
+      type,
+      userData: isExistingUser,
       id: isExistingUser?._id,
     };
 
@@ -128,7 +125,7 @@ export async function Login(req: Request, res: Response) {
 
     res
       .cookie("token", token)
-      .json({ error: false, message: "Login successful!", type, token });
+      .json({ error: false, message: "Login successful!", type });
   } catch (error) {
     console.error(error);
     return handleError(res, "Internal Server Error", 500);
